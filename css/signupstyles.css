@@ -1,0 +1,61 @@
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-container {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #DDD;
+    padding: 1px;
+    border-radius: 10px;
+    -webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+}
+
+.form-header {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: Georgia;
+}
+
+fieldset {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+legend {
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 18px;
+    font-family: Georgia;
+}
+
+input {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+select {
+    width: 58.5%;
+}
+
+button {
+    border-radius: 3px;
+    background-color: black;
+    color: white;
+    border: 0;
+    font-family: Georgia;
+    width: 170px;
+    height: 25px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    font-weight: bold;
+}

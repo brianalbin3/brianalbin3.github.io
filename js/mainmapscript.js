@@ -6,7 +6,6 @@ var Location = function(name, streetNo, streetName, city, state) {
     this.streetName = streetName;
     this.city = city;
     this.state = state;
-    this.fourSquareInfo = new FourSquareLocationInfo(name, city, state);
 
     this.marker = null;
     this.infoWindowContent = null;

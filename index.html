@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A map of the tech scene in Tysons Corner VA">
+    <meta name="description" content="A map of the tech scene in Tysons Corner, VA">
     <meta name="author" content="Brian Albin">
     <title>Tysons Tech Map</title>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="shortcut icon" type="image/png" href="img/favicon.png">
     <link href="css/simple-sidebar.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mainmapstyles.css">
+    <link rel="stylesheet" href="css/commonstyles.css">
 </head>
 <body>
     <div id="wrapper">
@@ -24,18 +25,24 @@
                 </li>
             </ul>
         </aside>
+        <div id="sidebar-toggle" class="sidebar-toggle-button"><span style="font-weight: bold; font-size: 18px;">«</span>&nbsp;&nbsp;Hide List</div>
         <div id="page-content-wrapper">
             <div class="container-in-page-content-wrapper">
                 <header>
                     <div class="hamburger-icon-wrapper">
-                        <div class="hamburger-icon" id="menu-toggle"></div>
+                        <div class="hamburger-icon"></div>
                     </div>
                     <div class="header-label-wrapper">
                         <h1 class="header-label">Tysons Tech Map</h1>
                     </div>
                     <div class="profile-wrapper">
                         <!-- TODO: Font with profile picture -->
-                        <div class="profile">B</div>
+                        <!-- TODO: Content changes depending on whether or not user is logged in or not -->
+                        <div class="profile">
+                            <span data-popover="true" data-content="
+                                    <a href=''>Sign Out</a>
+                                ">B</span>
+                        </div>
                     </div>
                 </header>
                 <main>
@@ -48,16 +55,42 @@
     </div> <!-- wrapper -->
 
     <script src="js/libs/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="js/libs/knockout-3.2.0.js"></script>
-    <script src="js/script.js"></script> <!-- TODO: RENAME THIS -->
-    <script async defer src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDTYiGEY8-a21cTJc_X8gnCiBQCY4Vm988&callback=initMap&v=3" onerror="googleMapsError()"></script>
+    <script src="js/mainmapscript.js"></script> <!-- TODO: RENAME THIS -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDTYiGEY8-a21cTJc_X8gnCiBQCY4Vm988&callback=initMap&v=3" onerror="googleMapsError()"></script>
 
     <script>
-    $("#menu-toggle").click(function(e) {
+    $("#sidebar-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
+        $("#sidebar-toggle").toggleClass("sidebar-button-toggled");
     });
+
+    // Create login/register tooltip that appears when the mouse hovers over profile
+    var originalLeave = $.fn.popover.Constructor.prototype.leave;
+    $.fn.popover.Constructor.prototype.leave = function(obj) {
+        var self = obj instanceof this.constructor ? obj : $(obj.currentTarget)[this.type](this.getDelegateOptions()).data('bs.' + this.type);
+        var container, timeout;
+
+        originalLeave.call(this, obj);
+
+        if(obj.currentTarget) {
+            container = $(obj.currentTarget).siblings('.popover')
+            timeout = self.timeout;
+            container.one('mouseenter', function() {
+                // We entered the actual popover – do not close the tooltip
+                clearTimeout(timeout);
+                // Let's monitor popover content instead
+                container.one('mouseleave', function(){
+                    $.fn.popover.Constructor.prototype.leave.call(self, self);
+                });
+            })
+        }
+    };
+
+    $('body').popover({ selector: '[data-popover]', trigger: 'hover', placement: 'bottom', delay: {show: 25, hide: 500}, html: true});
+
     </script>
 </body>
 </html>
